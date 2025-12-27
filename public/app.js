@@ -70,12 +70,15 @@ function isMobile() {
     return window.innerWidth <= 768;
 }
 
+<<<<<<< HEAD
 // Get random shape class for artist images
 function getRandomShape() {
     const shapes = ['shape-1', 'shape-2', 'shape-3', 'shape-4'];
     return shapes[Math.floor(Math.random() * shapes.length)];
 }
 
+=======
+>>>>>>> d64c9d8 (Add purchased albums tracking feature)
 // Restore user preferences from localStorage
 function restoreUserPreferences() {
     // Restore time range
@@ -100,6 +103,48 @@ function restoreUserPreferences() {
             gridViewBtn.classList.add('active');
             listViewBtn.classList.remove('active');
         }
+    }
+}
+
+// Purchased Albums State Management
+function getPurchasedAlbums() {
+    const stored = localStorage.getItem('purchasedAlbums');
+    return stored ? JSON.parse(stored) : [];
+}
+
+function savePurchasedAlbums(albumIds) {
+    localStorage.setItem('purchasedAlbums', JSON.stringify(albumIds));
+}
+
+function isAlbumPurchased(albumId) {
+    const purchased = getPurchasedAlbums();
+    return purchased.includes(albumId);
+}
+
+function toggleAlbumPurchased(albumId) {
+    let purchased = getPurchasedAlbums();
+
+    if (purchased.includes(albumId)) {
+        purchased = purchased.filter(id => id !== albumId);
+    } else {
+        purchased.push(albumId);
+    }
+
+    savePurchasedAlbums(purchased);
+
+    // Reload albums to update UI
+    if (cachedTracks.length > 0) {
+        aggregateAndDisplayAlbums(cachedTracks);
+    }
+}
+
+function resetAllPurchases() {
+    if (confirm('Are you sure you want to reset all purchased albums? This cannot be undone.')) {
+        localStorage.removeItem('purchasedAlbums');
+        if (cachedTracks.length > 0) {
+            aggregateAndDisplayAlbums(cachedTracks);
+        }
+        closeProfileModal();
     }
 }
 
@@ -195,6 +240,50 @@ window.addEventListener('resize', () => {
     }
 });
 
+<<<<<<< HEAD
+=======
+// Profile Modal Functions
+function openProfileModal() {
+    const modal = document.getElementById('profile-modal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProfileModal() {
+    const modal = document.getElementById('profile-modal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Avatar click event
+if (userAvatar) {
+    userAvatar.addEventListener('click', openProfileModal);
+}
+
+// Modal logout button
+const modalLogoutBtn = document.getElementById('modal-logout-btn');
+if (modalLogoutBtn) {
+    modalLogoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = '/logout';
+        }
+    });
+}
+
+// Reset purchases button
+const resetPurchasesBtn = document.getElementById('reset-purchases-btn');
+if (resetPurchasesBtn) {
+    resetPurchasesBtn.addEventListener('click', resetAllPurchases);
+}
+
+// Escape key to close modal
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeProfileModal();
+    }
+});
+
+>>>>>>> d64c9d8 (Add purchased albums tracking feature)
 // Check if user is already authenticated
 async function checkAuthStatus() {
     try {
@@ -611,14 +700,37 @@ function displayTopAlbums(albums) {
         topAlbumsContainer.innerHTML = albums.map((album, index) => {
             const imageUrl = album.imageUrl || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23B3B3B3"><rect width="24" height="24"/></svg>';
             const purchaseLinks = generatePurchaseLinks(album.artist, album.name);
-            const trackCountText = album.trackCount === 1 ? '1 track' : `${album.trackCount} tracks`;
+            const isPurchased = isAlbumPurchased(album.id);
 
             return `
                 <div class="list-row album-card">
                     <div class="list-row-rank">${index + 1}</div>
-                    <img src="${imageUrl}" alt="${album.name}" class="list-row-image" onclick="window.open('${album.spotifyUrl}', '_blank')">
+
+                    <!-- Image with purchase icon overlay -->
+                    <div style="position: relative;">
+                        <img src="${imageUrl}" alt="${album.name}" class="list-row-image" onclick="window.open('${album.spotifyUrl}', '_blank')">
+                        <div class="purchase-icon ${isPurchased ? 'purchased' : ''}"
+                             style="width: 24px; height: 24px; top: 4px; right: 4px;"
+                             onclick="event.stopPropagation(); toggleAlbumPurchased('${album.id}')"
+                             title="${isPurchased ? 'Mark as not purchased' : 'Mark as purchased'}">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                    </div>
+
                     <div class="list-row-info" onclick="window.open('${album.spotifyUrl}', '_blank')">
-                        <div class="list-row-title">${album.name}</div>
+                        <div class="list-row-title">
+                            ${album.name}
+                            ${isPurchased ? `
+                                <div class="purchased-badge">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                    <span>Purchased</span>
+                                </div>
+                            ` : ''}
+                        </div>
                         <div class="list-row-subtitle">${album.artist}</div>
                     </div>
                     <div class="list-row-meta">
@@ -640,12 +752,34 @@ function displayTopAlbums(albums) {
             const imageUrl = album.imageUrl || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23B3B3B3"><rect width="24" height="24"/></svg>';
             const purchaseLinks = generatePurchaseLinks(album.artist, album.name);
             const trackCountText = album.trackCount === 1 ? '1 track in your top 20' : `${album.trackCount} tracks in your top 20`;
+            const isPurchased = isAlbumPurchased(album.id);
 
             return `
                 <div class="card album-card">
                     <div class="card-content" onclick="window.open('${album.spotifyUrl}', '_blank')">
                         <span class="card-rank">${index + 1}</span>
+
+                        <!-- Purchase Icon Overlay -->
+                        <div class="purchase-icon ${isPurchased ? 'purchased' : ''}"
+                             onclick="event.stopPropagation(); toggleAlbumPurchased('${album.id}')"
+                             title="${isPurchased ? 'Mark as not purchased' : 'Mark as purchased'}">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        </div>
+
                         <img src="${imageUrl}" alt="${album.name}" class="card-image">
+
+                        <!-- Purchased Badge -->
+                        ${isPurchased ? `
+                            <div class="purchased-badge">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                                <span>Purchased</span>
+                            </div>
+                        ` : ''}
+
                         <div class="card-title">${album.name}</div>
                         <div class="card-subtitle">${album.artist}</div>
                         <div class="card-meta">${trackCountText}</div>

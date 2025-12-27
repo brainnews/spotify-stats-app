@@ -33,7 +33,8 @@ function setTheme(isDark) {
 
 function loadSavedTheme() {
     const savedTheme = localStorage.getItem('theme');
-    const isDark = savedTheme === 'dark';
+    // Default to dark mode for new users
+    const isDark = savedTheme !== 'light';
     setTheme(isDark);
     if (themeToggle) {
         themeToggle.checked = isDark;

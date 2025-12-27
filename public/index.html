@@ -35,11 +35,6 @@
                         <h1>BuyMoreMusic.</h1>
                     </div>
                     <div class="user-actions">
-                        <label class="theme-toggle">
-                            <input type="checkbox" id="theme-toggle" />
-                            <span class="toggle-slider"></span>
-                            <span class="toggle-label">Dark Mode</span>
-                        </label>
                         <img id="user-avatar" src="" alt="User avatar" class="avatar">
                     </div>
                 </div>
@@ -103,6 +98,15 @@
                 <div class="modal-content">
                     <button class="modal-close" onclick="closeProfileModal()" aria-label="Close">×</button>
                     <h2>Profile Settings</h2>
+
+                    <div class="modal-setting">
+                        <label class="theme-toggle">
+                            <input type="checkbox" id="theme-toggle" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Dark Mode</span>
+                        </label>
+                    </div>
+
                     <div class="modal-actions">
                         <button id="modal-logout-btn" class="btn btn-secondary">Logout</button>
                         <button id="reset-purchases-btn" class="btn btn-secondary btn-danger">Reset All Purchases</button>

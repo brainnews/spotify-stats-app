@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Stats & Purchase</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <main id="app">
+            <!-- Login View -->
+            <div id="login-view" class="view">
+                <header>
+                    <h1>Buy More Music</h1>
+                    <p class="subtitle">View your listening statistics and find where to buy your favorite music</p>
+                </header>
+                <div class="login-card">
+                    <h2>Connect to Spotify</h2>
+                    <p>Log in with your Spotify account to view your listening statistics</p>
+                    <button id="login-btn" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                        </svg>
+                        Login with Spotify
+                    </button>
+                    <div id="error-message" class="error hidden"></div>
+                </div>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view hidden">
+                <div class="user-info">
+                    <div class="site-info">
+                        <h1>BuyMoreMusic.</h1>
+                    </div>
+                    <div class="user-actions">
+                        <label class="theme-toggle">
+                            <input type="checkbox" id="theme-toggle" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Dark Mode</span>
+                        </label>
+                        <button id="logout-btn" class="btn btn-secondary">Logout</button>
+                        <img id="user-avatar" src="" alt="User avatar" class="avatar">
+                    </div>
+                </div>
+
+                <!-- Time Range Selector -->
+                <div class="time-range-selector">
+                    <div class="time-range-buttons">
+                        <button class="time-range-btn" data-range="long_term">All Time</button>
+                        <button class="time-range-btn" data-range="medium_term">6 Months</button>
+                        <button class="time-range-btn active" data-range="short_term">4 Weeks</button>
+                    </div>
+                    <div class="display-view-btn">
+                        <button id="display-view-btn" class="btn btn-tertiary">Grid</button>
+                        <button id="list-view-btn" class="btn btn-tertiary">Compact</button>
+                    </div>
+                </div>
+
+                <!-- Top Albums Section -->
+                <section class="stats-section" data-section="albums">
+                    <h2 class="section-header" onclick="toggleSection('albums')">
+                        <span>Your Top Albums</span>
+                        <span class="collapse-icon">−</span>
+                    </h2>
+                    <div id="top-albums" class="grid section-content">
+                        <!-- Albums will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Top Artists Section -->
+                <section class="stats-section" data-section="artists">
+                    <h2 class="section-header" onclick="toggleSection('artists')">
+                        <span>Your Top Artists</span>
+                        <span class="collapse-icon">−</span>
+                    </h2>
+                    <div id="top-artists" class="grid section-content">
+                        <!-- Artists will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Top Tracks Section -->
+                <section class="stats-section" data-section="tracks">
+                    <h2 class="section-header" onclick="toggleSection('tracks')">
+                        <span>Your Top Tracks</span>
+                        <span class="collapse-icon">−</span>
+                    </h2>
+                    <div id="top-tracks" class="grid section-content">
+                        <!-- Tracks will be loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Loading indicator -->
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Phase 4: Top Albums Aggregation</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

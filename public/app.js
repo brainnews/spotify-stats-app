@@ -70,15 +70,6 @@ function isMobile() {
     return window.innerWidth <= 768;
 }
 
-<<<<<<< HEAD
-// Get random shape class for artist images
-function getRandomShape() {
-    const shapes = ['shape-1', 'shape-2', 'shape-3', 'shape-4'];
-    return shapes[Math.floor(Math.random() * shapes.length)];
-}
-
-=======
->>>>>>> d64c9d8 (Add purchased albums tracking feature)
 // Restore user preferences from localStorage
 function restoreUserPreferences() {
     // Restore time range
@@ -240,8 +231,6 @@ window.addEventListener('resize', () => {
     }
 });
 
-<<<<<<< HEAD
-=======
 // Profile Modal Functions
 function openProfileModal() {
     const modal = document.getElementById('profile-modal');
@@ -283,7 +272,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
->>>>>>> d64c9d8 (Add purchased albums tracking feature)
 // Check if user is already authenticated
 async function checkAuthStatus() {
     try {

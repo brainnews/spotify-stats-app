@@ -433,7 +433,7 @@ async function loadTopArtists() {
 // Fetch and display top tracks
 async function loadTopTracks() {
     try {
-        const response = await fetch(`/api/top/tracks?time_range=${currentTimeRange}&limit=20`);
+        const response = await fetch(`/api/top/tracks?time_range=${currentTimeRange}&limit=40`);
 
         if (response.ok) {
             const data = await response.json();
@@ -716,7 +716,7 @@ function displayTopAlbums(albums) {
                     <div class="list-row-meta">
                         <div class="list-row-stat">
                             <div class="list-row-stat-value">${album.trackCount}</div>
-                            <div class="list-row-stat-label">In Top 20</div>
+                            <div class="list-row-stat-label">In Top 40</div>
                         </div>
                     </div>
                     <div class="list-row-actions">
@@ -731,7 +731,7 @@ function displayTopAlbums(albums) {
         topAlbumsContainer.innerHTML = albums.map((album, index) => {
             const imageUrl = album.imageUrl || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23B3B3B3"><rect width="24" height="24"/></svg>';
             const purchaseLinks = generatePurchaseLinks(album.artist, album.name);
-            const trackCountText = album.trackCount === 1 ? '1 track in your top 20' : `${album.trackCount} tracks in your top 20`;
+            const trackCountText = album.trackCount === 1 ? '1 track in your top 40' : `${album.trackCount} tracks in your top 40`;
             const isPurchased = isAlbumPurchased(album.id);
 
             return `

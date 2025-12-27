@@ -65,6 +65,17 @@ function restoreSectionStates() {
     });
 }
 
+// Check if mobile device
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+// Get random shape class for artist images
+function getRandomShape() {
+    const shapes = ['shape-1', 'shape-2', 'shape-3', 'shape-4'];
+    return shapes[Math.floor(Math.random() * shapes.length)];
+}
+
 // Restore user preferences from localStorage
 function restoreUserPreferences() {
     // Restore time range
@@ -75,13 +86,20 @@ function restoreUserPreferences() {
         }
     });
 
-    // Restore display view
-    if (currentView === 'list') {
-        listViewBtn.classList.add('active');
-        gridViewBtn.classList.remove('active');
-    } else {
+    // Force grid view on mobile, otherwise restore saved preference
+    if (isMobile()) {
+        currentView = 'grid';
         gridViewBtn.classList.add('active');
         listViewBtn.classList.remove('active');
+    } else {
+        // Restore display view
+        if (currentView === 'list') {
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+        } else {
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+        }
     }
 }
 
@@ -155,6 +173,10 @@ if (gridViewBtn) {
 
 if (listViewBtn) {
     listViewBtn.addEventListener('click', () => {
+        // Don't allow list view on mobile
+        if (isMobile()) {
+            return;
+        }
         currentView = 'list';
         localStorage.setItem('displayView', currentView);
         listViewBtn.classList.add('active');
@@ -162,6 +184,16 @@ if (listViewBtn) {
         loadStats();
     });
 }
+
+// Force grid view on resize to mobile
+window.addEventListener('resize', () => {
+    if (isMobile() && currentView === 'list') {
+        currentView = 'grid';
+        gridViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+        loadStats();
+    }
+});
 
 // Check if user is already authenticated
 async function checkAuthStatus() {
@@ -411,9 +443,10 @@ function displayTopArtists(artists) {
 
             const purchaseLinks = generatePurchaseLinks(artist.name);
             const popularity = artist.popularity || 0;
+            const shapeClass = getRandomShape();
 
             return `
-                <div class="list-row artist-card">
+                <div class="list-row artist-card ${shapeClass}">
                     <div class="list-row-rank">${index + 1}</div>
                     <img src="${imageUrl}" alt="${artist.name}" class="list-row-image" onclick="window.open('${artist.external_urls.spotify}', '_blank')">
                     <div class="list-row-info" onclick="window.open('${artist.external_urls.spotify}', '_blank')">
@@ -440,9 +473,10 @@ function displayTopArtists(artists) {
                 : 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23B3B3B3"><circle cx="12" cy="12" r="10"/></svg>';
 
             const purchaseLinks = generatePurchaseLinks(artist.name);
+            const shapeClass = getRandomShape();
 
             return `
-                <div class="card artist-card">
+                <div class="card artist-card ${shapeClass}">
                     <div class="card-content" onclick="window.open('${artist.external_urls.spotify}', '_blank')">
                         <span class="card-rank">${index + 1}</span>
                         <img src="${imageUrl}" alt="${artist.name}" class="card-image">

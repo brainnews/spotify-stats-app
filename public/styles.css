@@ -475,8 +475,20 @@ main {
     object-fit: cover;
 }
 
-.artist-card.list-row .list-row-image {
-    border-radius: 50%;
+.artist-card.list-row.shape-1 .list-row-image {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.artist-card.list-row.shape-2 .list-row-image {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.artist-card.list-row.shape-3 .list-row-image {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+.artist-card.list-row.shape-4 .list-row-image {
+    clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
 }
 
 .list-row-info {
@@ -586,8 +598,20 @@ main {
     margin-bottom: 12px;
 }
 
-.artist-card .card-image {
-    border-radius: 50%;
+.artist-card.shape-1 .card-image {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.artist-card.shape-2 .card-image {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.artist-card.shape-3 .card-image {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+.artist-card.shape-4 .card-image {
+    clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
 }
 
 .card-title {
@@ -758,6 +782,10 @@ footer {
     .time-range-selector {
         flex-direction: column;
         gap: 15px;
+    }
+
+    .display-view-btn {
+        display: none;
     }
 
     .list-row {

@@ -684,7 +684,7 @@ function displayTopAlbums(albums) {
             const isPurchased = isAlbumPurchased(album.id);
 
             return `
-                <div class="list-row album-card">
+                <div class="list-row album-card ${isPurchased ? 'purchased' : ''}">
                     <div class="list-row-rank">${index + 1}</div>
 
                     <!-- Image with purchase icon overlay -->
@@ -698,19 +698,22 @@ function displayTopAlbums(albums) {
                                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                             </svg>
                         </div>
+                        ${isPurchased ? `
+                            <div class="purchased-badge"
+                                 style="width: auto; font-size: 0.6rem; padding: 3px 8px; top: 4px; right: 4px;"
+                                 onclick="event.stopPropagation(); toggleAlbumPurchased('${album.id}')"
+                                 title="Mark as not purchased">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                                <span>Purchased</span>
+                            </div>
+                        ` : ''}
                     </div>
 
                     <div class="list-row-info" onclick="window.open('${album.spotifyUrl}', '_blank')">
                         <div class="list-row-title">
                             ${album.name}
-                            ${isPurchased ? `
-                                <div class="purchased-badge">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    <span>Purchased</span>
-                                </div>
-                            ` : ''}
                         </div>
                         <div class="list-row-subtitle">${album.artist}</div>
                     </div>
@@ -736,7 +739,7 @@ function displayTopAlbums(albums) {
             const isPurchased = isAlbumPurchased(album.id);
 
             return `
-                <div class="card album-card">
+                <div class="card album-card ${isPurchased ? 'purchased' : ''}">
                     <div class="card-content" onclick="window.open('${album.spotifyUrl}', '_blank')">
                         <span class="card-rank">${index + 1}</span>
 
@@ -749,17 +752,19 @@ function displayTopAlbums(albums) {
                             </svg>
                         </div>
 
-                        <img src="${imageUrl}" alt="${album.name}" class="card-image">
-
                         <!-- Purchased Badge -->
                         ${isPurchased ? `
-                            <div class="purchased-badge">
+                            <div class="purchased-badge"
+                                 onclick="event.stopPropagation(); toggleAlbumPurchased('${album.id}')"
+                                 title="Mark as not purchased">
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                                 </svg>
                                 <span>Purchased</span>
                             </div>
                         ` : ''}
+
+                        <img src="${imageUrl}" alt="${album.name}" class="card-image">
 
                         <div class="card-title">${album.name}</div>
                         <div class="card-subtitle">${album.artist}</div>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Privacy - BuyMoreMusic</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .terms-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .terms-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .terms-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .terms-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .terms-section {
+            background: var(--card-background);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .terms-section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .terms-section h3 {
+            color: var(--text-primary);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .terms-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .terms-section ul {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .terms-section li {
+            margin-bottom: 8px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary-hover);
+        }
+
+        .highlight {
+            background: var(--card-hover);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="terms-container">
+        <a href="/" class="back-link">← Back to BuyMoreMusic</a>
+
+        <div class="terms-header">
+            <h1>Terms & Privacy</h1>
+            <p>Last updated: December 2024</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>Privacy Policy</h2>
+
+            <h3>What We Collect</h3>
+            <p>BuyMoreMusic connects to your Spotify account to display your listening statistics. We collect:</p>
+            <ul>
+                <li>Your Spotify username and profile information</li>
+                <li>Your top artists, albums, and tracks</li>
+                <li>Temporary authentication tokens to access Spotify's API</li>
+            </ul>
+
+            <h3>What We Do With Your Data</h3>
+            <div class="highlight">
+                <p><strong>We do NOT store your listening data on our servers.</strong> All statistics are fetched directly from Spotify's API and displayed to you in real-time.</p>
+            </div>
+            <p>We use your data to:</p>
+            <ul>
+                <li>Display your personalized music statistics</li>
+                <li>Generate purchase links to music platforms (Bandcamp, Amazon Music, Apple Music)</li>
+                <li>Store your preferences locally in your browser (theme, purchased albums, etc.)</li>
+            </ul>
+
+            <h3>Local Storage</h3>
+            <p>We store the following information locally in your browser using localStorage:</p>
+            <ul>
+                <li>Theme preference (dark/light mode)</li>
+                <li>Time range selection (4 weeks, 6 months, all time)</li>
+                <li>Purchased albums list (honor system, stored locally only)</li>
+                <li>Section collapse/expand states</li>
+            </ul>
+            <p>This data never leaves your device and can be cleared at any time by clearing your browser data.</p>
+
+            <h3>What We Don't Do</h3>
+            <ul>
+                <li>We do NOT sell your data to third parties</li>
+                <li>We do NOT share your listening history with anyone</li>
+                <li>We do NOT track you across other websites</li>
+                <li>We do NOT store your music statistics in a database</li>
+                <li>We do NOT send marketing emails</li>
+            </ul>
+
+            <h3>Third-Party Services</h3>
+            <p>BuyMoreMusic uses the following third-party services:</p>
+            <ul>
+                <li><strong>Spotify API:</strong> To fetch your listening statistics. See <a href="https://www.spotify.com/privacy" target="_blank" style="color: var(--primary);">Spotify's Privacy Policy</a></li>
+                <li><strong>Cloudflare:</strong> For hosting and SSL. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" style="color: var(--primary);">Cloudflare's Privacy Policy</a></li>
+            </ul>
+
+            <h3>Cookies</h3>
+            <p>We use minimal cookies only for:</p>
+            <ul>
+                <li>Maintaining your Spotify authentication session</li>
+                <li>Storing access and refresh tokens (required for Spotify API access)</li>
+            </ul>
+            <p>These cookies expire after 1 hour and are automatically refreshed while you're using the app.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>Terms of Service</h2>
+
+            <h3>Acceptance of Terms</h3>
+            <p>By accessing and using BuyMoreMusic, you agree to these terms. If you don't agree, please don't use the service.</p>
+
+            <h3>Service Description</h3>
+            <p>BuyMoreMusic is a free tool that displays your Spotify listening statistics and provides links to purchase music on various platforms. It is provided "as is" without warranties of any kind.</p>
+
+            <h3>Your Responsibilities</h3>
+            <ul>
+                <li>You must have a valid Spotify account to use this service</li>
+                <li>You are responsible for maintaining the confidentiality of your Spotify credentials</li>
+                <li>You agree not to use this service for any unlawful purpose</li>
+                <li>You understand that the "purchased albums" feature is an honor system for personal tracking only</li>
+            </ul>
+
+            <h3>Spotify Integration</h3>
+            <p>BuyMoreMusic uses Spotify's API and is subject to Spotify's terms and policies. We are not affiliated with, endorsed by, or sponsored by Spotify. All Spotify-related trademarks are property of Spotify AB.</p>
+
+            <h3>Purchase Links</h3>
+            <p>Links to music platforms (Bandcamp, Amazon Music, Apple Music) are provided as a convenience. We are not responsible for:</p>
+            <ul>
+                <li>The accuracy of search results on external platforms</li>
+                <li>Availability of music on those platforms</li>
+                <li>Prices or purchasing experiences on external sites</li>
+                <li>Any transactions you make on external platforms</li>
+            </ul>
+            <p>We do not receive any commission or payment from these platforms.</p>
+
+            <h3>Limitation of Liability</h3>
+            <p>BuyMoreMusic is provided free of charge. We are not liable for any damages arising from your use of the service, including but not limited to:</p>
+            <ul>
+                <li>Service interruptions or downtime</li>
+                <li>Data inaccuracies from Spotify's API</li>
+                <li>Loss of locally stored preferences</li>
+                <li>Issues with third-party platforms</li>
+            </ul>
+
+            <h3>Changes to Service</h3>
+            <p>We reserve the right to:</p>
+            <ul>
+                <li>Modify or discontinue the service at any time</li>
+                <li>Update these terms and privacy policy</li>
+                <li>Change features or functionality</li>
+            </ul>
+            <p>Continued use of the service after changes constitutes acceptance of the updated terms.</p>
+
+            <h3>Account Termination</h3>
+            <p>You can stop using BuyMoreMusic at any time by:</p>
+            <ul>
+                <li>Logging out of the application</li>
+                <li>Revoking BuyMoreMusic's access in your <a href="https://www.spotify.com/account/apps/" target="_blank" style="color: var(--primary);">Spotify account settings</a></li>
+                <li>Clearing your browser's cookies and localStorage</li>
+            </ul>
+
+            <h3>Contact</h3>
+            <p>For questions about these terms or privacy concerns, please contact us through our <a href="https://github.com/brainnews/spotify-stats-app/issues" target="_blank" style="color: var(--primary);">GitHub repository</a>.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>Open Source</h2>
+            <p>BuyMoreMusic is open source software. You can view the source code, report issues, or contribute on <a href="https://github.com/brainnews/spotify-stats-app" target="_blank" style="color: var(--primary);">GitHub</a>.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 BuyMoreMusic. Not affiliated with Spotify AB.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

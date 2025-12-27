@@ -81,21 +81,10 @@ function restoreUserPreferences() {
         }
     });
 
-    // Force grid view on mobile, otherwise restore saved preference
-    if (isMobile()) {
-        currentView = 'grid';
-        gridViewBtn.classList.add('active');
-        listViewBtn.classList.remove('active');
-    } else {
-        // Restore display view
-        if (currentView === 'list') {
-            listViewBtn.classList.add('active');
-            gridViewBtn.classList.remove('active');
-        } else {
-            gridViewBtn.classList.add('active');
-            listViewBtn.classList.remove('active');
-        }
-    }
+    // Always use grid view
+    currentView = 'grid';
+    if (gridViewBtn) gridViewBtn.classList.add('active');
+    if (listViewBtn) listViewBtn.classList.remove('active');
 }
 
 // Purchased Albums State Management
@@ -191,40 +180,30 @@ timeRangeButtons.forEach(button => {
     });
 });
 
-// View toggle event listeners
-if (gridViewBtn) {
-    gridViewBtn.addEventListener('click', () => {
-        currentView = 'grid';
-        localStorage.setItem('displayView', currentView);
-        gridViewBtn.classList.add('active');
-        listViewBtn.classList.remove('active');
-        loadStats();
-    });
-}
+// View toggle event listeners (disabled - grid view only)
+// if (gridViewBtn) {
+//     gridViewBtn.addEventListener('click', () => {
+//         currentView = 'grid';
+//         localStorage.setItem('displayView', currentView);
+//         gridViewBtn.classList.add('active');
+//         listViewBtn.classList.remove('active');
+//         loadStats();
+//     });
+// }
 
-if (listViewBtn) {
-    listViewBtn.addEventListener('click', () => {
-        // Don't allow list view on mobile
-        if (isMobile()) {
-            return;
-        }
-        currentView = 'list';
-        localStorage.setItem('displayView', currentView);
-        listViewBtn.classList.add('active');
-        gridViewBtn.classList.remove('active');
-        loadStats();
-    });
-}
-
-// Force grid view on resize to mobile
-window.addEventListener('resize', () => {
-    if (isMobile() && currentView === 'list') {
-        currentView = 'grid';
-        gridViewBtn.classList.add('active');
-        listViewBtn.classList.remove('active');
-        loadStats();
-    }
-});
+// if (listViewBtn) {
+//     listViewBtn.addEventListener('click', () => {
+//         // Don't allow list view on mobile
+//         if (isMobile()) {
+//             return;
+//         }
+//         currentView = 'list';
+//         localStorage.setItem('displayView', currentView);
+//         listViewBtn.classList.add('active');
+//         gridViewBtn.classList.remove('active');
+//         loadStats();
+//     });
+// }
 
 // Profile Modal Functions
 function openProfileModal() {

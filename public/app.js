@@ -169,12 +169,6 @@ loginBtn.addEventListener('click', () => {
     window.location.href = '/login';
 });
 
-logoutBtn.addEventListener('click', () => {
-    if (confirm('Are you sure you want to logout?')) {
-        window.location.href = '/logout';
-    }
-});
-
 // Theme toggle event listener
 if (themeToggle) {
     themeToggle.addEventListener('change', (e) => {
@@ -520,10 +514,9 @@ function displayTopArtists(artists) {
 
             const purchaseLinks = generatePurchaseLinks(artist.name);
             const popularity = artist.popularity || 0;
-            const shapeClass = getRandomShape();
 
             return `
-                <div class="list-row artist-card ${shapeClass}">
+                <div class="list-row artist-card">
                     <div class="list-row-rank">${index + 1}</div>
                     <img src="${imageUrl}" alt="${artist.name}" class="list-row-image" onclick="window.open('${artist.external_urls.spotify}', '_blank')">
                     <div class="list-row-info" onclick="window.open('${artist.external_urls.spotify}', '_blank')">
@@ -550,10 +543,9 @@ function displayTopArtists(artists) {
                 : 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23B3B3B3"><circle cx="12" cy="12" r="10"/></svg>';
 
             const purchaseLinks = generatePurchaseLinks(artist.name);
-            const shapeClass = getRandomShape();
 
             return `
-                <div class="card artist-card ${shapeClass}">
+                <div class="card artist-card">
                     <div class="card-content" onclick="window.open('${artist.external_urls.spotify}', '_blank')">
                         <span class="card-rank">${index + 1}</span>
                         <img src="${imageUrl}" alt="${artist.name}" class="card-image">

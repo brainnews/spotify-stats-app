@@ -682,11 +682,7 @@ main {
     color: var(--text-secondary);
 }
 
-.purchase-links:nth-child(1) .purchase-btn {
-    border-right: 1px solid var(--border);
-}
-
-.purchase-links:nth-child(2) .purchase-btn {
+.purchase-links .purchase-btn:not(:first-child) {
     border-left: 1px solid var(--border);
 }
 

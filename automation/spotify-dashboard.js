@@ -110,7 +110,7 @@ class SpotifyDashboardAutomation {
                 return true;
             }
 
-            // Build login URL with allow_password=1 to force password login (not email verification)
+            // Build login URL with allow_password=1 to show password field directly
             const redirectUrl = encodeURIComponent('https://developer.spotify.com/dashboard');
             const loginUrl = `https://accounts.spotify.com/en/login?allow_password=1&continue=${redirectUrl}`;
 
@@ -119,29 +119,36 @@ class SpotifyDashboardAutomation {
 
             await this.randomDelay();
 
-            // Step 1: Enter email/username
-            console.log('[Automation] Entering username...');
+            // With allow_password=1, both email and password fields are on the same page
+            console.log('[Automation] Waiting for login form...');
             await this.page.waitForSelector(SELECTORS.usernameInput, { timeout: 15000 });
+            await this.page.waitForSelector(SELECTORS.passwordInput, { timeout: 15000 });
+
+            // Enter email
+            console.log(`[Automation] Entering username: ${this.email}`);
             await this.page.fill(SELECTORS.usernameInput, this.email);
 
-            await this.randomDelay(500, 1000);
+            await this.randomDelay(300, 600);
 
-            // Step 2: Click Continue button
-            console.log('[Automation] Clicking Continue...');
-            await this.page.click(SELECTORS.continueButton);
-
-            await this.randomDelay(1000, 2000);
-
-            // Step 3: Wait for password field and enter password
-            console.log('[Automation] Entering password...');
-            await this.page.waitForSelector(SELECTORS.passwordInput, { timeout: 15000 });
+            // Enter password (log length for debugging, not the actual password)
+            console.log(`[Automation] Entering password (length: ${this.password?.length || 0})`);
             await this.page.fill(SELECTORS.passwordInput, this.password);
 
-            await this.randomDelay(500, 1000);
+            await this.randomDelay(300, 600);
 
-            // Step 4: Click Log in button
+            // Click Log in button
             console.log('[Automation] Clicking Log in...');
             await this.page.click(SELECTORS.submitLogin);
+
+            // Wait a moment for the login to process
+            await this.randomDelay(2000, 3000);
+
+            // Check for login error
+            const pageContent = await this.page.content();
+            if (pageContent.includes('Incorrect username or password') || pageContent.includes('incorrect')) {
+                await this.page.screenshot({ path: 'login-failure.png' });
+                throw new Error('Incorrect username or password - check SPOTIFY_DASHBOARD_PASSWORD secret');
+            }
 
             // Wait for redirect to dashboard
             console.log('[Automation] Waiting for dashboard redirect...');
@@ -159,7 +166,11 @@ class SpotifyDashboardAutomation {
             console.error('[Automation] Login failed:', error.message);
 
             // Take screenshot for debugging
-            await this.page.screenshot({ path: 'login-failure.png' });
+            try {
+                await this.page.screenshot({ path: 'login-failure.png' });
+            } catch (e) {
+                // Ignore screenshot errors
+            }
 
             throw new Error(`Login failed: ${error.message}`);
         }

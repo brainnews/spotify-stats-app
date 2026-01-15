@@ -1,16 +1,12 @@
 name: Spotify Access Manager
 
+# DISABLED: Spotify bot detection blocks automated login
+# The queue system works manually via /admin dashboard
+# Keeping this workflow for potential future use
+
 on:
-  # Run every 6 hours
-  schedule:
-    - cron: '0 */6 * * *'
-
-  # Allow manual trigger from GitHub UI
+  # Manual trigger only (automation currently disabled due to Spotify bot detection)
   workflow_dispatch:
-
-  # Allow webhook trigger from app
-  repository_dispatch:
-    types: [process-access]
 
 jobs:
   process-users:

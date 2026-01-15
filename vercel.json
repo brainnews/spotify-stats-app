@@ -4,9 +4,37 @@
     {
       "src": "server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/(styles\\.css|app\\.js|access\\.js|.*\\.(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/admin/dashboard\\.js",
+      "dest": "/public/admin/dashboard.js"
+    },
+    {
+      "src": "/access\\.html",
+      "dest": "/public/access.html"
+    },
+    {
+      "src": "/access-status\\.html",
+      "dest": "/public/access-status.html"
+    },
+    {
+      "src": "/admin/dashboard\\.html",
+      "dest": "/public/admin/dashboard.html"
+    },
+    {
+      "src": "/admin/?$",
+      "dest": "/public/admin/dashboard.html"
+    },
     {
       "src": "/(.*)",
       "dest": "server.js"

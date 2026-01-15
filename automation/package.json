@@ -1,0 +1,17 @@
+{
+  "name": "spotify-access-automation",
+  "version": "1.0.0",
+  "description": "Playwright automation for Spotify Developer Dashboard user management",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "dotenv": "^17.2.3",
+    "playwright": "^1.40.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

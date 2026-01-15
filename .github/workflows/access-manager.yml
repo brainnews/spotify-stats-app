@@ -1,0 +1,84 @@
+name: Spotify Access Manager
+
+on:
+  # Run every 6 hours
+  schedule:
+    - cron: '0 */6 * * *'
+
+  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
+
+  # Allow webhook trigger from app
+  repository_dispatch:
+    types: [process-access]
+
+jobs:
+  process-users:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: automation/package-lock.json
+
+      - name: Install automation dependencies
+        run: |
+          cd automation
+          npm install
+
+      - name: Install Playwright browsers
+        run: |
+          cd automation
+          npx playwright install chromium
+          npx playwright install-deps chromium
+
+      - name: Run automation
+        id: automation
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN }}
+          SPOTIFY_DASHBOARD_EMAIL: ${{ secrets.SPOTIFY_DASHBOARD_EMAIL }}
+          SPOTIFY_DASHBOARD_PASSWORD: ${{ secrets.SPOTIFY_DASHBOARD_PASSWORD }}
+          SPOTIFY_APP_ID: ${{ secrets.SPOTIFY_APP_ID }}
+          SPOTIFY_APP_NAME: ${{ secrets.SPOTIFY_APP_NAME }}
+          APP_WEBHOOK_URL: ${{ secrets.APP_WEBHOOK_URL }}
+          AUTOMATION_WEBHOOK_SECRET: ${{ secrets.AUTOMATION_WEBHOOK_SECRET }}
+        run: |
+          cd automation
+          node index.js
+
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-screenshots
+          path: automation/*.png
+          retention-days: 7
+
+      - name: Notify on failure
+        if: failure()
+        env:
+          ADMIN_WEBHOOK_URL: ${{ secrets.ADMIN_WEBHOOK_URL }}
+        run: |
+          if [ -n "$ADMIN_WEBHOOK_URL" ]; then
+            curl -X POST "$ADMIN_WEBHOOK_URL" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "text": "[Spotify Access Manager] Automation job failed! Check GitHub Actions for details.",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "*Automation Job Failed*\nThe scheduled access management job encountered an error.\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Job Details>"
+                    }
+                  }
+                ]
+              }'
+          fi

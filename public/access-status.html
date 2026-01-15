@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Status - BuyMoreMusic.</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .access-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .access-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .access-card h2 {
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .access-card p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .status-card {
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .status-card.pending {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .status-card.active {
+            background: rgba(29, 185, 84, 0.1);
+            border: 1px solid rgba(29, 185, 84, 0.2);
+        }
+
+        .status-card.expired,
+        .status-card.removed,
+        .status-card.failed {
+            background: rgba(108, 117, 125, 0.1);
+            border: 1px solid rgba(108, 117, 125, 0.2);
+        }
+
+        .status-card.not-found {
+            background: rgba(255, 99, 71, 0.1);
+            border: 1px solid rgba(255, 99, 71, 0.2);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .status-badge.pending {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .status-badge.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .status-badge.expired,
+        .status-badge.removed {
+            background: #6c757d;
+            color: white;
+        }
+
+        .status-badge.failed {
+            background: #dc3545;
+            color: white;
+        }
+
+        .big-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .status-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .status-card p {
+            margin: 4px 0;
+            color: var(--text-secondary);
+        }
+
+        .status-card .detail {
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .open-app-btn {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 24px;
+            font-weight: 600;
+        }
+
+        .open-app-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .request-again-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .request-again-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <main class="access-container">
+            <header style="text-align: center; margin-bottom: 32px;">
+                <h1>BuyMoreMusic.</h1>
+                <p class="subtitle">Check your access status</p>
+            </header>
+
+            <div class="access-card">
+                <form id="status-form">
+                    <div class="form-group">
+                        <label for="email">Your Spotify Email</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submit-btn">Check Status</button>
+                </form>
+
+                <div id="status-result"></div>
+            </div>
+
+            <a href="/" class="back-link">Back to home</a>
+        </main>
+
+        <footer>
+            <p>
+                <a href="/terms.html" style="color: var(--primary); text-decoration: none;">Terms & Privacy</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Load saved theme
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+
+        loadSavedTheme();
+
+        // Check for email in URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailParam = urlParams.get('email');
+        if (emailParam) {
+            document.getElementById('email').value = emailParam;
+            // Auto-submit if email provided
+            setTimeout(() => checkStatus(emailParam), 100);
+        }
+
+        const form = document.getElementById('status-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('status-result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            await checkStatus(email);
+        });
+
+        async function checkStatus(email) {
+            if (!email) return;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Checking...';
+
+            try {
+                const response = await fetch(`/api/access/status/${encodeURIComponent(email)}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    renderStatus(data);
+                } else if (response.status === 404) {
+                    resultDiv.innerHTML = `
+                        <div class="status-card not-found">
+                            <h3>No Request Found</h3>
+                            <p>We couldn't find an access request for this email.</p>
+                            <a href="access.html" class="request-again-link">Request Access</a>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="status-card not-found">
+                            <h3>Error</h3>
+                            <p>${data.error || 'Something went wrong'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `
+                    <div class="status-card not-found">
+                        <h3>Connection Error</h3>
+                        <p>Failed to connect to server. Please try again.</p>
+                    </div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Check Status';
+            }
+        }
+
+        function renderStatus(status) {
+            if (status.status === 'pending') {
+                resultDiv.innerHTML = `
+                    <div class="status-card pending">
+                        <span class="status-badge pending">Pending</span>
+                        <h3>You're in the Queue</h3>
+                        <p>Your position:</p>
+                        <p class="big-number">#${status.queuePosition}</p>
+                        <p class="detail">Estimated wait: ${status.estimatedWait}</p>
+                        <p class="detail" style="margin-top: 12px;">We'll email you when your access is ready.</p>
+                    </div>
+                `;
+            } else if (status.status === 'active') {
+                const daysUsed = 7 - status.daysRemaining;
+                const progress = (daysUsed / 7) * 100;
+
+                resultDiv.innerHTML = `
+                    <div class="status-card active">
+                        <span class="status-badge active">Active</span>
+                        <h3>Your Access is Active!</h3>
+                        <p class="big-number">${status.daysRemaining}</p>
+                        <p>days remaining</p>
+                        <div class="progress-bar">
+                            <div class="fill" style="width: ${progress}%"></div>
+                        </div>
+                        <p class="detail">Expires: ${new Date(status.expiresAt).toLocaleDateString()}</p>
+                        <a href="/" class="open-app-btn">Open App</a>
+                    </div>
+                `;
+            } else if (status.status === 'expired' || status.status === 'removed') {
+                resultDiv.innerHTML = `
+                    <div class="status-card expired">
+                        <span class="status-badge ${status.status}">${status.status}</span>
+                        <h3>Access ${status.status === 'expired' ? 'Expired' : 'Removed'}</h3>
+                        <p>${status.message}</p>
+                        <a href="access.html" class="request-again-link">Request Access Again</a>
+                    </div>
+                `;
+            } else if (status.status === 'failed') {
+                resultDiv.innerHTML = `
+                    <div class="status-card failed">
+                        <span class="status-badge failed">Failed</span>
+                        <h3>Processing Failed</h3>
+                        <p>${status.message}</p>
+                        <a href="access.html" class="request-again-link">Try Again</a>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

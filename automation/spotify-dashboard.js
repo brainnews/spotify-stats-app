@@ -20,11 +20,12 @@ chromium.use(StealthPlugin());
 
 // Selectors - Updated based on actual Spotify Dashboard DOM (January 2026)
 const SELECTORS = {
-    // Login page (Spotify accounts login)
+    // Login page (Spotify accounts login - two-step flow)
     loginButton: 'button:has-text("Log in"), a:has-text("Log in")',
-    usernameInput: '#login-username',
-    passwordInput: '#login-password',
-    submitLogin: '#login-button',
+    usernameInput: '#login-username, input[data-testid="login-username"]',
+    continueButton: 'button:has-text("Continue"), button[data-testid="login-button"]',
+    passwordInput: '#login-password, input[data-testid="login-password"]',
+    submitLogin: 'button:has-text("Log in"), button[data-testid="login-button"]',
 
     // Dashboard navigation
     appList: 'main',
@@ -94,7 +95,7 @@ class SpotifyDashboardAutomation {
         console.log('[Automation] Logging in to Spotify Developer Dashboard...');
 
         try {
-            // Navigate to dashboard
+            // First check if already logged in by visiting dashboard
             await this.page.goto('https://developer.spotify.com/dashboard', {
                 waitUntil: 'networkidle'
             });
@@ -109,27 +110,44 @@ class SpotifyDashboardAutomation {
                 return true;
             }
 
-            // Click login button
-            await this.page.click(SELECTORS.loginButton);
-            await this.page.waitForNavigation({ waitUntil: 'networkidle' });
+            // Build login URL with allow_password=1 to force password login (not email verification)
+            const redirectUrl = encodeURIComponent('https://developer.spotify.com/dashboard');
+            const loginUrl = `https://accounts.spotify.com/en/login?allow_password=1&continue=${redirectUrl}`;
+
+            console.log('[Automation] Navigating to password login page...');
+            await this.page.goto(loginUrl, { waitUntil: 'networkidle' });
 
             await this.randomDelay();
 
-            // Fill login form
-            await this.page.waitForSelector(SELECTORS.usernameInput);
+            // Step 1: Enter email/username
+            console.log('[Automation] Entering username...');
+            await this.page.waitForSelector(SELECTORS.usernameInput, { timeout: 15000 });
             await this.page.fill(SELECTORS.usernameInput, this.email);
 
-            await this.randomDelay(300, 800);
+            await this.randomDelay(500, 1000);
 
+            // Step 2: Click Continue button
+            console.log('[Automation] Clicking Continue...');
+            await this.page.click(SELECTORS.continueButton);
+
+            await this.randomDelay(1000, 2000);
+
+            // Step 3: Wait for password field and enter password
+            console.log('[Automation] Entering password...');
+            await this.page.waitForSelector(SELECTORS.passwordInput, { timeout: 15000 });
             await this.page.fill(SELECTORS.passwordInput, this.password);
 
-            await this.randomDelay(300, 800);
+            await this.randomDelay(500, 1000);
 
-            // Submit login
+            // Step 4: Click Log in button
+            console.log('[Automation] Clicking Log in...');
             await this.page.click(SELECTORS.submitLogin);
 
-            // Wait for dashboard to load
-            await this.page.waitForNavigation({ waitUntil: 'networkidle', timeout: 60000 });
+            // Wait for redirect to dashboard
+            console.log('[Automation] Waiting for dashboard redirect...');
+            await this.page.waitForURL('**/developer.spotify.com/**', { timeout: 30000 });
+
+            await this.randomDelay();
 
             // Verify login success
             await this.page.waitForSelector(SELECTORS.appList, { timeout: 30000 });

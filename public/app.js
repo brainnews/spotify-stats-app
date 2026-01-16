@@ -22,7 +22,7 @@ const gridViewBtn = document.getElementById('display-view-btn');
 const listViewBtn = document.getElementById('list-view-btn');
 
 // State
-let currentTimeRange = localStorage.getItem('timeRange') || 'short_term';
+let currentTimeRange = localStorage.getItem('timeRange') || 'long_term';
 let cachedTracks = [];
 let currentView = localStorage.getItem('displayView') || 'grid'; // 'grid' or 'list'
 

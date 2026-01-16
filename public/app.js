@@ -154,7 +154,7 @@ window.addEventListener('load', () => {
         loadUserData();
     } else if (hash.startsWith('error=')) {
         const error = hash.split('=')[1];
-        showError(getErrorMessage(error));
+        showError(getErrorMessage(error), shouldShowAccessLink(error));
         showView('login');
     } else {
         // Check if user already has tokens
@@ -396,24 +396,34 @@ function showLoading(show) {
 }
 
 // Show error message
-function showError(message) {
-    errorMessage.textContent = message;
+function showError(message, showAccessLink = false) {
+    if (showAccessLink) {
+        errorMessage.innerHTML = `${message} <a href="/access.html" style="color: var(--primary);">Request access</a>`;
+    } else {
+        errorMessage.textContent = message;
+    }
     errorMessage.classList.remove('hidden');
 
     setTimeout(() => {
         errorMessage.classList.add('hidden');
-    }, 5000);
+    }, 8000);
 }
 
 // Get user-friendly error message
 function getErrorMessage(error) {
     const messages = {
         'state_mismatch': 'Security validation failed. Please try again.',
-        'invalid_token': 'Failed to authenticate with Spotify. Please try again.',
+        'invalid_token': 'Failed to authenticate with Spotify. You may not have access yet.',
         'access_denied': 'You denied access to your Spotify account.'
     };
 
-    return messages[error] || 'An error occurred during login. Please try again.';
+    return messages[error] || 'An error occurred during login. You may not have access yet.';
+}
+
+// Check if error should show access request link
+function shouldShowAccessLink(error) {
+    // Show access link for auth failures that might be due to not being in allowlist
+    return error === 'invalid_token' || !['state_mismatch', 'access_denied'].includes(error);
 }
 
 // Check if user has active access in the allowlist

@@ -6,6 +6,11 @@ const logoutBtn = document.getElementById('logout-btn');
 const errorMessage = document.getElementById('error-message');
 const loading = document.getElementById('loading');
 
+// Access control elements
+const loginCard = document.querySelector('#login-view .login-card:not(#access-denied-card)');
+const accessDeniedCard = document.getElementById('access-denied-card');
+const deniedEmailSpan = document.getElementById('denied-email');
+
 const userAvatar = document.getElementById('user-avatar');
 
 const topArtistsContainer = document.getElementById('top-artists');
@@ -137,6 +142,9 @@ window.addEventListener('load', () => {
     // Restore user preferences (time range and display view)
     restoreUserPreferences();
 
+    // Ensure login view shows main card by default
+    resetLoginView();
+
     const hash = window.location.hash.substring(1);
 
     if (hash === 'success') {
@@ -254,6 +262,18 @@ async function checkAuthStatus() {
 
         if (response.ok) {
             const userData = await response.json();
+
+            // Check if user has active access in the allowlist
+            const userEmail = userData.email;
+            if (userEmail) {
+                const hasAccess = await checkUserAccess(userEmail);
+                if (!hasAccess) {
+                    showLoading(false);
+                    showAccessDenied(userEmail);
+                    return;
+                }
+            }
+
             displayUserData(userData);
             showView('dashboard');
             restoreSectionStates();
@@ -285,6 +305,18 @@ async function loadUserData() {
 
         if (response.ok) {
             const userData = await response.json();
+
+            // Check if user has active access in the allowlist
+            const userEmail = userData.email;
+            if (userEmail) {
+                const hasAccess = await checkUserAccess(userEmail);
+                if (!hasAccess) {
+                    showLoading(false);
+                    showAccessDenied(userEmail);
+                    return;
+                }
+            }
+
             displayUserData(userData);
             showView('dashboard');
             restoreSectionStates();
@@ -348,6 +380,12 @@ function showView(view) {
     }
 }
 
+// Reset login view to show main login card (not access denied)
+function resetLoginView() {
+    if (loginCard) loginCard.classList.remove('hidden');
+    if (accessDeniedCard) accessDeniedCard.classList.add('hidden');
+}
+
 // Show/hide loading indicator
 function showLoading(show) {
     if (show) {
@@ -376,6 +414,40 @@ function getErrorMessage(error) {
     };
 
     return messages[error] || 'An error occurred during login. Please try again.';
+}
+
+// Check if user has active access in the allowlist
+async function checkUserAccess(email) {
+    try {
+        const response = await fetch(`/api/access/status/${encodeURIComponent(email)}`);
+        if (response.ok) {
+            const data = await response.json();
+            return data.status === 'active';
+        }
+        // If endpoint returns 404, user hasn't requested access
+        return false;
+    } catch (error) {
+        console.error('Error checking access status:', error);
+        // If access check fails, allow through (fail open for better UX)
+        // The Spotify API itself will reject unauthorized users anyway
+        return true;
+    }
+}
+
+// Show access denied view
+function showAccessDenied(email) {
+    if (deniedEmailSpan) {
+        deniedEmailSpan.textContent = email;
+    }
+    if (loginCard) {
+        loginCard.classList.add('hidden');
+    }
+    if (accessDeniedCard) {
+        accessDeniedCard.classList.remove('hidden');
+    }
+    showView('login');
+    // Log user out from Spotify since they can't use the app
+    fetch('/logout').catch(() => {});
 }
 
 // Load stats (artists and tracks)

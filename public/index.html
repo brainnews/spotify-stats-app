@@ -25,6 +25,20 @@
                         Connect to Spotify
                     </button>
                     <div id="error-message" class="error hidden"></div>
+                    <p class="access-note">
+                        Don't have access yet? <a href="/access.html">Request access</a>
+                    </p>
+                </div>
+
+                <!-- Access Denied View (shown when user not in allowlist) -->
+                <div id="access-denied-card" class="login-card hidden">
+                    <h2>Access Required</h2>
+                    <p>Your Spotify account (<span id="denied-email"></span>) doesn't have access to this app yet.</p>
+                    <p>Due to Spotify API limitations, we can only support 25 users at a time.</p>
+                    <a href="/access.html" class="btn btn-primary">Request Access</a>
+                    <p class="access-note">
+                        Already requested? <a href="/access-status.html">Check your status</a>
+                    </p>
                 </div>
             </div>
 

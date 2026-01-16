@@ -115,6 +115,22 @@ main {
     margin-bottom: 30px;
 }
 
+.login-card .access-note {
+    margin-top: 24px;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.login-card .access-note a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.login-card .access-note a:hover {
+    text-decoration: underline;
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;

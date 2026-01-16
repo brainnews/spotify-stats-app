@@ -760,7 +760,7 @@ footer {
     }
 
     .grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: 1fr;
         gap: 15px;
     }
 
@@ -779,14 +779,14 @@ footer {
     }
 
     .purchase-btn {
-        font-size: 0.55rem;
-        padding: 6px 1px;
-        letter-spacing: 0.1px;
-        font-weight: 400;
+        font-size: 0.8rem;
+        padding: 12px 8px;
+        letter-spacing: 0.2px;
+        font-weight: 500;
     }
 
     .purchase-links {
-        gap: 3px;
+        gap: 6px;
     }
 
     .time-range-selector {
